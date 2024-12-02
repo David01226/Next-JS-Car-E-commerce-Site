@@ -11,6 +11,10 @@
   font-family: "Manrope", sans-serif;
 }
 
+html {
+  overflow-y: auto!important
+}
+
 /* START: General styles */
 .max-width {
   @apply max-w-[1440px] mx-auto;
