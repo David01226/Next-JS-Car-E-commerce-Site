@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from "next/image"
 import { CarProps } from "@/types"
 import CustomButton from "./CustomButton"
-import { calculateCarRent } from "@/utils"
+import { calculateCarRent, getCarLogo } from "@/utils"
+import CarDetails from "./CarDetails"
 
 interface CarCardProps {
   car: CarProps
@@ -13,8 +14,18 @@ interface CarCardProps {
 const CarCard = ({ car }: CarCardProps) => {
   const { city_mpg, year, make, model, transmission, drive } = car
   const carRent = calculateCarRent(city_mpg, year)
-
   const [isOpen, setIsOpen] = useState(false)
+
+  const [logo, setLogo] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchLogo = async () => {
+      const logo = await getCarLogo(car);
+      setLogo(logo);
+    };
+
+    fetchLogo();
+  }, [car]);
 
   return (
     <div className="car-card group">
@@ -33,7 +44,7 @@ const CarCard = ({ car }: CarCardProps) => {
       </p>
 
       <div className="relative w-full h-40 my-3 object-contain">
-        <Image src="/hero.png" fill alt="car model" priority className="object-contain"/>
+        {logo && <Image src={logo} fill alt="car model" priority className="object-contain"/>}
       </div>
 
       <div className="relative flex w-full mt-2">
@@ -69,7 +80,7 @@ const CarCard = ({ car }: CarCardProps) => {
         </div>
       </div>
 
-      
+      <CarDetails isOpen={isOpen} closeModal={()=>setIsOpen(false)} car={car} />
     </div>
   )
 }
