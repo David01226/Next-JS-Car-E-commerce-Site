@@ -3,24 +3,25 @@
 import { CustomFilter, Hero, SearchBar, ShowMore } from "@/components";
 import CarCard from "@/components/CarCard";
 import { fuels, yearsOfProduction } from "@/constants";
+import { CarProps } from "@/types";
 import { fetchCars } from "@/utils";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [allCars, setAllCars] = useState([])
-  const [loading, setLoading] = useState(false)
+  // Cars list state
+  const [allCars, setAllCars] = useState<CarProps[]>([]); // Type: Array of Car objects
+  const [loading, setLoading] = useState<boolean>(false); // Type: boolean
 
-  // search states
-  const [manufacturer, setManufacturer] = useState("")
-  const [model, setModel] = useState("")
+  // Search states
+  const [manufacturer, setManufacturer] = useState<string>(""); // Type: string
+  const [model, setModel] = useState<string>(""); // Type: string
 
-  // filter states
-  const [year, setYear] = useState(2024)
-  const [fuel, setFuel] = useState("")
+  // Filter states
+  const [year, setYear] = useState<number>(2024); // Type: number
+  const [fuel, setFuel] = useState<string>(""); // Type: string
 
-  // pagination state
-  const [limit, setLimit] = useState(10)
+  // Pagination state
+  const [limit, setLimit] = useState<number>(10); 
 
   const getCars = async () => {
     setLoading(true)
@@ -74,12 +75,6 @@ export default function Home() {
             </div>
             {loading && (
               <div className="mt-16 w-full flex-center">
-                {/* <Image 
-                  src="/loader.svg"
-                  alt="loader"
-                  width={50}
-                  height={50}
-                /> */}
                 Loading...
               </div>
             )}
